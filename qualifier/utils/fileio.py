@@ -5,6 +5,7 @@ This contains a helper function for loading and saving CSV files.
 
 """
 import csv
+from pathlib import Path
 
 
 def load_csv(csvpath):
@@ -43,3 +44,4 @@ def save_csv(csvpath, data, header=None):
         if header:
             csvwriter.writerow(header)
         csvwriter.writerows(data)
+    return

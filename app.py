@@ -39,8 +39,6 @@ def load_bank_data():
 
     return load_csv(csvpath)
 
-load_bank_data()
-
 def get_applicant_info():
     """Prompt dialog to get the applicant's financial information.
 
@@ -53,6 +51,7 @@ def get_applicant_info():
     income = questionary.text("What's your total monthly income?").ask()
     loan_amount = questionary.text("What's your desired loan amount?").ask()
     home_value = questionary.text("What's your home value?").ask()
+    #????figure out how to return to question if input is not valid
 
     credit_score = int(credit_score)
     debt = float(debt)
@@ -99,7 +98,7 @@ def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_valu
     bank_data_filtered = filter_debt_to_income(monthly_debt_ratio, bank_data_filtered)
     bank_data_filtered = filter_loan_to_value(loan_to_value_ratio, bank_data_filtered)
 
-    print(f"Found {len(bank_data_filtered)} qualifying loans")
+    print(f"Found {len(bank_data_filtered)} Qualifying Loans")
 
     return bank_data_filtered
 
@@ -109,10 +108,20 @@ def save_qualifying_loans(qualifying_loans):
 
     Args:
         qualifying_loans (list of lists): The qualifying bank loans.
-    """
-    #???csvpath = questionary.text("Enter a file path to a rate-sheet (.csv):").confirm().ask()    
-    csvpath = Path('qualifying_loans.csv')
-    save_csv(csvpath, qualifying_loans)
+    """   
+    if len(qualifying_loans) == 0:
+        sys.exit(f"Sorry, you currently do not qualify.")
+
+    ask_to_save = questionary.confirm("Would you like to save your Qualifying Bank Loans?").ask()
+
+    if ask_to_save == False:
+        sys.exit(f"Loans not saved. Thank you for using Qualifier!")
+
+    abc = questionary.text("Enter a file path to a rate-sheet (.csv):").ask()
+    abc = Path(abc)
+    
+    save_csv(abc, qualifying_loans)
+    sys.exit(f"Loans saved to output file: ({abc}). Thank you for using Qualifier!")
 
 
 def run():
