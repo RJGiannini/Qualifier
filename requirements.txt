@@ -1,0 +1,4 @@
+fire
+questionary
+pytest
+mkdocs

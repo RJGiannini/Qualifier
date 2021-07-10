@@ -6,6 +6,8 @@ This is a command line application to match applicants with qualifying loans.
 Example:
     $ python app.py
 """
+from os import close
+from re import escape
 import sys
 import fire
 import questionary
@@ -45,17 +47,35 @@ def get_applicant_info():
     """
 
     credit_score = questionary.text("What's your credit score?").ask()
-    debt = questionary.text("What's your current amount of monthly debt?").ask()
-    income = questionary.text("What's your total monthly income?").ask()
-    loan_amount = questionary.text("What's your desired loan amount?").ask()
-    home_value = questionary.text("What's your home value?").ask()
-    #????figure out how to return to question if input is not valid
+    try:
+        credit_score = int(credit_score)
+    except:
+        print("Invalid input, please restart Qualifier and use only numbers.")
 
-    credit_score = int(credit_score)
-    debt = float(debt)
-    income = float(income)
-    loan_amount = float(loan_amount)
-    home_value = float(home_value)
+    debt = questionary.text("What's your current amount of monthly debt?").ask()
+    try:
+        debt = float(debt)
+    except:
+        print("Invalid input, please restart Qualifier and use only numbers.")
+
+    income = questionary.text("What's your total monthly income?").ask()
+    try:
+        income = float(income)
+    except:
+        print("Invalid input, please restart Qualifier and use only numbers.")
+
+    loan_amount = questionary.text("What's your desired loan amount?").ask()
+    try:
+        loan_amount = float(loan_amount)
+    except:
+        print("Invalid input, please restart Qualifier and use only numbers.")
+
+    home_value = questionary.text("What's your home value?").ask()
+    try:
+        home_value = float(home_value)
+    except:
+        print("Invalid input, please restart Qualifier and use only numbers.")
+
     return credit_score, debt, income, loan_amount, home_value
 
 def find_qualifying_loans(bank_data, credit_score, debt, income, loan, home_value):
